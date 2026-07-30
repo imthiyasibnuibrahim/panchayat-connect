@@ -21,9 +21,10 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').then(
+          navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(
             (registration) => {
-              console.log('✅ ServiceWorker registered successfully with scope: ', registration.scope);
+              registration.update();
+              console.log('✅ ServiceWorker registered and updated with scope: ', registration.scope);
             },
             (err) => {
               console.log('❌ ServiceWorker registration failed: ', err);
