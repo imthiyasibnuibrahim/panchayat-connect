@@ -23,7 +23,7 @@ const PrivateRoute = ({ children }) => {
 };
 
 function Layout({ children }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const location = useLocation();
   const { user, logout, isAdmin } = useContext(AuthContext);
@@ -54,13 +54,13 @@ function Layout({ children }) {
   const getRoleBadge = (role) => {
     switch (role) {
       case 'Admin':
-        return <span style={{ background: '#FEE2E2', color: '#991B1B', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShieldAlert size={14} /> Central Admin</span>;
+        return <span style={{ background: '#FEE2E2', color: '#991B1B', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShieldAlert size={13} /> Admin</span>;
       case 'Seller':
-        return <span style={{ background: '#D1FAE5', color: '#065F46', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShoppingBag size={14} /> Kudumbashree Seller</span>;
+        return <span style={{ background: '#D1FAE5', color: '#065F46', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShoppingBag size={13} /> Seller</span>;
       case 'Authority':
-        return <span style={{ background: '#DBEAFE', color: '#1E40AF', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><Landmark size={14} /> Panchayat Authority</span>;
+        return <span style={{ background: '#DBEAFE', color: '#1E40AF', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><Landmark size={13} /> Authority</span>;
       default:
-        return <span style={{ background: '#F3F4F6', color: '#374151', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><UserIcon size={14} /> Citizen</span>;
+        return <span style={{ background: '#F3F4F6', color: '#374151', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><UserIcon size={13} /> Citizen</span>;
     }
   };
 
@@ -75,60 +75,67 @@ function Layout({ children }) {
 
   return (
     <div className="app-container" style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-      <header className="glass-panel" style={{ padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50, borderRadius: '0 0 12px 12px', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="btn" style={{ padding: '8px', background: 'transparent' }}>
-            {isSidebarOpen ? <X size={24} color="var(--text-main)" /> : <Menu size={24} color="var(--text-main)" />}
+      <header className="glass-panel header-content" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50, borderRadius: '0 0 12px 12px', marginBottom: '16px' }}>
+        <div className="header-top" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="btn" style={{ padding: '6px', background: 'transparent' }} aria-label="Toggle navigation menu">
+            {isSidebarOpen ? <X size={22} color="var(--text-main)" /> : <Menu size={22} color="var(--text-main)" />}
           </button>
-          <h1 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--primary)', fontWeight: '700' }}>Panchayat Connect</h1>
+          <h1 style={{ margin: 0, fontSize: '1.35rem', color: 'var(--primary)', fontWeight: '700' }}>Panchayat Connect</h1>
         </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+
+        <div className="header-actions" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <button
             onClick={handleInstallPwa}
             className="btn btn-secondary"
-            style={{ padding: '8px 14px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: '600' }}
+            style={{ padding: '6px 12px', borderRadius: '18px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: '600' }}
             title="Install App to Phone Screen"
           >
-            <Smartphone size={16} color="var(--primary)" /> Add to Phone
+            <Smartphone size={15} color="var(--primary)" /> Add to Phone
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '500' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '500' }}>
             {getRoleBadge(user.role)}
-            <span style={{ fontSize: '0.95rem' }}>{user.name}</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{user.name?.split(' ')[0]}</span>
           </div>
           
-          <button onClick={logout} className="btn btn-danger" style={{ padding: '8px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }} title="Logout">
-            <LogOut size={16} /> Logout
+          <button onClick={logout} className="btn btn-danger" style={{ padding: '6px 10px', borderRadius: '18px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }} title="Logout">
+            <LogOut size={14} /> Logout
           </button>
         </div>
       </header>
 
-      <div style={{ display: 'flex', flex: 1, gap: '24px', padding: '0 24px' }}>
+      <div className="main-layout" style={{ display: 'flex', flex: 1, gap: '20px', padding: '0 12px' }}>
         <aside 
-          className="glass-panel" 
+          className="glass-panel sidebar-mobile" 
           style={{ 
-            width: '260px', 
+            width: '240px', 
             borderRadius: '12px',
-            padding: '20px 16px',
+            padding: '16px 12px',
             display: isSidebarOpen ? 'block' : 'none',
             flexShrink: 0,
             alignSelf: 'flex-start',
             position: 'sticky',
-            top: '90px'
+            top: '80px'
           }}
         >
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <Link key={item.path} to={item.path} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', borderRadius: '8px', textDecoration: 'none', color: isActive ? 'white' : 'var(--text-main)', backgroundColor: isActive ? 'var(--primary)' : 'transparent', fontWeight: isActive ? '600' : '500' }}>
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => { if (window.innerWidth <= 768) setSidebarOpen(false); }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', borderRadius: '8px', textDecoration: 'none', color: isActive ? 'white' : 'var(--text-main)', backgroundColor: isActive ? 'var(--primary)' : 'transparent', fontWeight: isActive ? '600' : '500', fontSize: '0.9rem' }}
+                >
                   {item.icon} {item.name}
                 </Link>
               );
             })}
           </nav>
         </aside>
-        <main style={{ flex: 1, paddingBottom: '40px' }}>
+
+        <main style={{ flex: 1, paddingBottom: '30px', minWidth: 0 }}>
           {children}
         </main>
       </div>

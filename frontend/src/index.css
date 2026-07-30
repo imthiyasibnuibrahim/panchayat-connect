@@ -29,10 +29,11 @@ body {
   color: var(--text-main);
   transition: background-color 0.3s, color 0.3s;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -40,7 +41,7 @@ body {
 }
 
 [data-theme="dark"] .glass-panel {
-  background: rgba(31, 41, 55, 0.7);
+  background: rgba(31, 41, 55, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -137,4 +138,63 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+/* 📱 Mobile Phone Screen Responsiveness (< 768px) */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 10px !important;
+  }
+
+  .header-content {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+  }
+
+  .header-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .header-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding-top: 10px;
+  }
+
+  .main-layout {
+    flex-direction: column !important;
+    padding: 0 !important;
+    gap: 16px !important;
+  }
+
+  .sidebar-mobile {
+    width: 100% !important;
+    position: relative !important;
+    top: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .card {
+    padding: 16px !important;
+  }
+
+  h1 {
+    font-size: 1.25rem !important;
+  }
+
+  h2 {
+    font-size: 1.3rem !important;
+  }
+
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
