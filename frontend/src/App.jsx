@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { 
-  Home, Briefcase, ShoppingBag, Sprout, Siren, Menu, X, LogOut, User as UserIcon, ShieldCheck, ShieldAlert, Landmark, Smartphone 
+  Home, Briefcase, ShoppingBag, Sprout, Siren, Menu, X, LogOut, User as UserIcon, ShieldCheck, ShieldAlert, Landmark, Smartphone, ChevronRight
 } from 'lucide-react';
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -22,7 +22,7 @@ const PrivateRoute = ({ children }) => {
   if (loading) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '16px', color: 'var(--primary)' }}>
-        <div className="animate-pulse" style={{ fontSize: '1.2rem', fontWeight: '700' }}>
+        <div className="animate-pulse" style={{ fontSize: '1.1rem', fontWeight: '600' }}>
           🌿 Loading Panchayat Connect...
         </div>
       </div>
@@ -33,17 +33,17 @@ const PrivateRoute = ({ children }) => {
 };
 
 function Layout({ children }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const location = useLocation();
   const { user, logout, isAdmin } = useContext(AuthContext);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setSidebarOpen(false);
-      } else {
+      if (window.innerWidth > 768) {
         setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
       }
     };
     handleResize();
@@ -77,73 +77,87 @@ function Layout({ children }) {
   const getRoleBadge = (role) => {
     switch (role) {
       case 'Admin':
-        return <span style={{ background: '#FEE2E2', color: '#991B1B', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShieldAlert size={13} /> Admin</span>;
+        return <span style={{ background: '#FEE2E2', color: '#991B1B', padding: '3px 8px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShieldAlert size={12} /> Admin</span>;
       case 'Seller':
-        return <span style={{ background: '#D1FAE5', color: '#065F46', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShoppingBag size={13} /> Seller</span>;
+        return <span style={{ background: '#DCFCE7', color: '#15803D', padding: '3px 8px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ShoppingBag size={12} /> Seller</span>;
       case 'Authority':
-        return <span style={{ background: '#DBEAFE', color: '#1E40AF', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><Landmark size={13} /> Authority</span>;
+        return <span style={{ background: '#DBEAFE', color: '#1E40AF', padding: '3px 8px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><Landmark size={12} /> Authority</span>;
       default:
-        return <span style={{ background: '#F3F4F6', color: '#374151', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><UserIcon size={13} /> Citizen</span>;
+        return <span style={{ background: '#F1F5F9', color: '#475569', padding: '3px 8px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '4px' }}><UserIcon size={12} /> Citizen</span>;
     }
   };
 
   const displayName = user?.name && typeof user.name === 'string' ? user.name.split(' ')[0] : 'Citizen';
 
   const navItems = [
-    { name: 'Dashboard', path: '/', icon: <Home size={20} /> },
-    ...(isAdmin ? [{ name: 'Admin Control Center', path: '/admin', icon: <ShieldCheck size={20} color="#DC2626" /> }] : []),
-    { name: 'Employment Portal', path: '/employment', icon: <Briefcase size={20} /> },
-    { name: 'Kudumbashree Market', path: '/market', icon: <ShoppingBag size={20} /> },
-    { name: 'Fresh Harvest', path: '/agriculture', icon: <Sprout size={20} /> },
-    { name: 'Disaster SOS', path: '/disaster', icon: <Siren size={20} /> },
+    { name: 'Dashboard', path: '/', icon: <Home size={18} /> },
+    ...(isAdmin ? [{ name: 'Admin Control Center', path: '/admin', icon: <ShieldCheck size={18} color="#DC2626" /> }] : []),
+    { name: 'Employment Portal', path: '/employment', icon: <Briefcase size={18} /> },
+    { name: 'Kudumbashree Market', path: '/market', icon: <ShoppingBag size={18} /> },
+    { name: 'Fresh Harvest', path: '/agriculture', icon: <Sprout size={18} /> },
+    { name: 'Disaster SOS', path: '/disaster', icon: <Siren size={18} /> },
   ];
 
   return (
     <div className="app-container" style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-      <header className="glass-panel header-content" style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50, borderRadius: '0 0 12px 12px', marginBottom: '16px' }}>
-        <div className="header-top" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      
+      {/* Sleek Native Top Navbar */}
+      <header className="glass-panel" style={{ padding: '12px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 50, borderRadius: '0 0 14px 14px', marginBottom: '16px', borderBottom: '1px solid #E2E8F0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="btn" style={{ padding: '6px', background: 'transparent' }} aria-label="Toggle navigation menu">
             {isSidebarOpen ? <X size={22} color="var(--text-main)" /> : <Menu size={22} color="var(--text-main)" />}
           </button>
-          <h1 style={{ margin: 0, fontSize: '1.35rem', color: 'var(--primary)', fontWeight: '700' }}>Panchayat Connect</h1>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <h1 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--primary)', fontWeight: '700', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>🌴</span> Panchayat Connect
+            </h1>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: 1 }}>Ward 4 • Digital Local Portal</span>
+          </div>
         </div>
 
-        <div className="header-actions" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button
             onClick={handleInstallPwa}
-            className="btn btn-secondary"
-            style={{ padding: '6px 12px', borderRadius: '18px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: '600' }}
+            className="btn btn-secondary hide-on-mobile-xs"
+            style={{ padding: '5px 10px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: '600' }}
             title="Install App to Phone Screen"
           >
-            <Smartphone size={15} color="var(--primary)" /> Add to Phone
+            <Smartphone size={13} /> App
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '500' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#F8FAFC', padding: '4px 8px', borderRadius: '20px', border: '1px solid #E2E8F0' }}>
             {getRoleBadge(user?.role)}
-            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{displayName}</span>
+            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-main)' }}>{displayName}</span>
           </div>
           
-          <button onClick={logout} className="btn btn-danger" style={{ padding: '6px 10px', borderRadius: '18px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }} title="Logout">
-            <LogOut size={14} /> Logout
+          <button onClick={logout} className="btn btn-danger" style={{ padding: '6px 10px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem' }} title="Logout">
+            <LogOut size={13} />
           </button>
         </div>
       </header>
 
-      <div className="main-layout" style={{ display: 'flex', flex: 1, gap: '20px', padding: '0 12px' }}>
+      <div className="main-layout" style={{ display: 'flex', flex: 1, gap: '20px', padding: '0 8px' }}>
         <aside 
           className="glass-panel sidebar-mobile" 
           style={{ 
             width: '240px', 
-            borderRadius: '12px',
+            borderRadius: '14px',
             padding: '16px 12px',
             display: isSidebarOpen ? 'block' : 'none',
             flexShrink: 0,
             alignSelf: 'flex-start',
             position: 'sticky',
-            top: '80px'
+            top: '75px',
+            zIndex: 40
           }}
         >
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ padding: '0 8px 12px 8px', borderBottom: '1px solid #F1F5F9', marginBottom: '10px' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
+              Navigation Menu
+            </div>
+          </div>
+
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
@@ -151,16 +165,29 @@ function Layout({ children }) {
                   key={item.path}
                   to={item.path}
                   onClick={() => { if (window.innerWidth <= 768) setSidebarOpen(false); }}
-                  style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', borderRadius: '8px', textDecoration: 'none', color: isActive ? 'white' : 'var(--text-main)', backgroundColor: isActive ? 'var(--primary)' : 'transparent', fontWeight: isActive ? '600' : '500', fontSize: '0.9rem' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: '8px', textDecoration: 'none', color: isActive ? 'white' : 'var(--text-main)', backgroundColor: isActive ? 'var(--primary)' : 'transparent', fontWeight: isActive ? '600' : '500', fontSize: '0.85rem' }}
                 >
-                  {item.icon} {item.name}
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {item.icon} {item.name}
+                  </span>
+                  <ChevronRight size={14} opacity={isActive ? 0.9 : 0.4} />
                 </Link>
               );
             })}
+
+            <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #F1F5F9' }}>
+              <button
+                onClick={handleInstallPwa}
+                className="btn btn-secondary"
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: '600', justifyContent: 'flex-start' }}
+              >
+                <Smartphone size={16} /> Add App to Phone Screen
+              </button>
+            </div>
           </nav>
         </aside>
 
-        <main style={{ flex: 1, paddingBottom: '30px', minWidth: 0 }}>
+        <main style={{ flex: 1, paddingBottom: '40px', minWidth: 0 }}>
           {children}
         </main>
       </div>

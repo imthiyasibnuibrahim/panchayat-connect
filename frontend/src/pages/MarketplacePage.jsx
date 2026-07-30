@@ -95,31 +95,46 @@ export default function MarketplacePage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       
-      {/* Header Banner */}
-      <div className="card glass-panel" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderLeft: '4px solid var(--primary)', padding: '24px' }}>
+      {/* Modern Emerald Banner */}
+      <div
+        className="card"
+        style={{
+          background: 'linear-gradient(135deg, #064E3B 0%, #047857 100%)',
+          color: 'white',
+          padding: '18px 20px',
+          borderRadius: '14px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '12px',
+          boxShadow: '0 4px 14px rgba(6, 78, 59, 0.15)',
+          border: 'none',
+        }}
+      >
         <div>
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: 0, color: 'var(--primary)', fontWeight: '700' }}>
-            <ShoppingBag size={28} /> Kudumbashree Hyper-Local Marketplace
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, fontWeight: '600', color: 'white', fontSize: '1.15rem' }}>
+            <ShoppingBag size={22} /> Kudumbashree Micro-Enterprise Market
           </h2>
-          <p style={{ margin: '6px 0 0 0', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Direct-from-Women's Self Help Groups. Geo-fenced delivery for Ward {user?.wardNumber || '4'} residents.
+          <p style={{ margin: '4px 0 0 0', opacity: 0.9, fontSize: '0.82rem', color: '#E2E8F0' }}>
+            Direct-from-Women's Self Help Groups • Geo-fenced delivery for Ward {user?.wardNumber || '4'}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           {(isSeller || isAdmin) && (
             <button
               onClick={() => setShowAddModal(true)}
-              className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 18px', borderRadius: '8px' }}
+              className="btn"
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 12px', borderRadius: '8px', background: '#F59E0B', color: 'white', border: 'none', fontSize: '0.78rem', fontWeight: '600' }}
             >
-              <Plus size={18} /> List Kudumbashree Item
+              <Plus size={15} /> List Item
             </button>
           )}
 
-          <div style={{ textAlign: 'right', background: 'rgba(0,0,0,0.03)', padding: '8px 14px', borderRadius: '8px' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '4px', fontWeight: '600' }}>
-              Max Delivery Distance: <span style={{ color: 'var(--primary)' }}>{radius} km</span>
+          <div style={{ background: 'rgba(255,255,255,0.15)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.25)' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', marginBottom: '2px', fontWeight: '500', color: '#F1F5F9' }}>
+              Radius: <span style={{ color: '#FBBF24', fontWeight: '700' }}>{radius} km</span>
             </label>
             <input
               type="range"
@@ -127,7 +142,7 @@ export default function MarketplacePage() {
               max="15"
               value={radius}
               onChange={(e) => setRadius(parseInt(e.target.value, 10))}
-              style={{ width: '140px' }}
+              style={{ width: '110px' }}
             />
           </div>
         </div>
