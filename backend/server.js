@@ -116,22 +116,62 @@ const seedInitialData = async () => {
 
       await Job.insertMany([
         {
-          title: 'Data Entry Operator',
+          title: 'Auto Workshop Mechanical Trainee',
+          type: 'internship',
+          department: 'Ward Auto Workshop & Garage',
+          description: 'Hands-on practical training in 2-wheeler and 4-wheeler vehicle servicing, engine overhaul, and diagnostic tools.',
+          locationName: 'Panchayat Industrial Zone - Gate 2',
+          stipendOrSalary: '₹7,500 / month (Stipend + Certificate)',
+          deadline: new Date('2026-08-25'),
+          category: 'Workshop'
+        },
+        {
+          title: 'Front Office & Reception Executive',
           type: 'vacancy',
-          department: 'Panchayat Office',
-          description: 'Handling digital entry for citizen applications.',
-          locationName: 'Panchayat Office - Block B',
-          stipendOrSalary: '₹15,000 / month',
+          department: 'Panchayat Sevana Center & Helpdesk',
+          description: 'Front desk visitor assistance, citizen queue management, phone helpline handling, and grievance entry.',
+          locationName: 'Panchayat Main Complex - Block A',
+          stipendOrSalary: '₹14,500 / month',
+          deadline: new Date('2026-08-20'),
+          category: 'Front Office'
+        },
+        {
+          title: 'Data Entry & Digital Office Assistant',
+          type: 'internship',
+          department: 'Panchayat e-Governance Center',
+          description: 'Digital data entry assistant for citizen welfare scheme applications, MS Office documentation, and portal verification.',
+          locationName: 'Ward 4 IT Helpdesk Center',
+          stipendOrSalary: '₹8,500 / month (Stipend)',
           deadline: new Date('2026-08-15'),
           category: 'Clerical'
         },
         {
-          title: 'Carbon Neutral Survey Intern',
+          title: 'Kudumbashree Garment Unit Tailoring Trainee',
           type: 'internship',
-          department: 'ASAP Kerala',
-          description: 'Survey ward 4 for carbon footprint data.',
-          locationName: 'Ward 4 Field',
-          stipendOrSalary: 'Certificate + ₹5,000',
+          department: 'Kudumbashree Textiles & Craft Unit',
+          description: 'Industrial sewing machine training, garment pattern cutting, and quality control under certified master tailors.',
+          locationName: 'Kudumbashree Multi-Craft Center',
+          stipendOrSalary: '₹6,000 / month + Free Toolkit',
+          deadline: new Date('2026-08-28'),
+          category: 'Tailoring & Craft'
+        },
+        {
+          title: 'Electrical & Appliance Repair Apprentice',
+          type: 'internship',
+          department: 'Community Technical Workshop',
+          description: 'Apprenticeship in residential wiring, solar inverter installation, motor pump troubleshooting, and electrical safety.',
+          locationName: 'Ward 4 Skill Development Hub',
+          stipendOrSalary: '₹8,000 / month (Apprenticeship)',
+          deadline: new Date('2026-08-22'),
+          category: 'Electrical'
+        },
+        {
+          title: 'MGNREGA Canal Desiltation & Bund Work',
+          type: 'vacancy',
+          department: 'Panchayat Engineering Wing',
+          description: 'Public canal desiltation, water body rejuvenation, and rural road bund construction under Ward 4 MGNREGA scheme.',
+          locationName: 'Ward 4 Agricultural Canal Site',
+          stipendOrSalary: '₹311 / day (Daily Wage)',
           deadline: new Date('2026-08-10'),
           category: 'Environmental'
         }

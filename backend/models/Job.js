@@ -5,19 +5,18 @@ const jobSchema = new mongoose.Schema(
     title: { type: String, required: true, trim: true },
     type: {
       type: String,
-      enum: ['vacancy', 'internship', 'skill_camp'],
+      default: 'vacancy',
       required: true,
     },
-    department: { type: String, required: true }, // e.g. "Data Entry & Digitalization Cell", "ASAP Kerala"
+    department: { type: String, required: true },
     description: { type: String, required: true },
     qualifications: [{ type: String }],
-    locationName: { type: String, required: true }, // e.g. "Panchayat Office - Block B"
-    stipendOrSalary: { type: String, required: true }, // e.g. "₹18,000 / month" or "Free Training + Certificate"
+    locationName: { type: String, required: true },
+    stipendOrSalary: { type: String, required: true },
     deadline: { type: Date, required: true },
     category: {
       type: String,
-      enum: ['Clerical', 'IT & Surveying', 'Tailoring & Craft', 'Electrical', 'Agriculture', 'Environmental'],
-      default: 'Clerical',
+      default: 'General',
     },
     applicants: [
       {

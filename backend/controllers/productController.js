@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 
 /**
- * @desc Get Products filtered by Buyer Location & Seller Delivery Geo-Fence Radius
+ * @desc Get Products filtered by Buyer Location & Calculated Distance
  * @route GET /api/v1/products/nearby
  * @access Public / Citizen
  */
@@ -32,6 +32,7 @@ exports.getProductsWithinDeliveryRadius = async (req, res) => {
             coordinates: buyerCoordinates,
           },
           distanceField: 'distanceMeters',
+          maxDistance: 50000, // Search up to 50km radius so client-side slider works smoothly
           spherical: true,
           query: matchConditions,
         },
@@ -54,16 +55,6 @@ exports.getProductsWithinDeliveryRadius = async (req, res) => {
           status: 1,
           createdAt: 1,
           distanceKm: { $round: [{ $divide: ['$distanceMeters', 1000] }, 2] },
-          // Geo-fence boolean condition: distance <= deliveryRadius (in meters)
-          isWithinDeliveryZone: {
-            $lte: ['$distanceMeters', { $multiply: ['$deliveryRadiusKm', 1000] }],
-          },
-        },
-      },
-      {
-        // Strictly return products where the buyer location is inside the seller's geo-fence radius
-        $match: {
-          isWithinDeliveryZone: true,
         },
       },
       {
@@ -110,7 +101,6 @@ exports.preBookHarvestCrop = async (req, res) => {
       });
     }
 
-    // Step 1: Find product and check status inside session
     const product = await Product.findById(productId).session(session);
 
     if (!product) {
@@ -144,7 +134,6 @@ exports.preBookHarvestCrop = async (req, res) => {
       });
     }
 
-    // Step 2: Atomic Update with concurrency guard condition
     const updatedProduct = await Product.findOneAndUpdate(
       {
         _id: productId,
@@ -168,7 +157,6 @@ exports.preBookHarvestCrop = async (req, res) => {
       });
     }
 
-    // Step 3: Check if target weight is reached to auto-close listing
     if (updatedProduct.bookedQuantityKg >= updatedProduct.targetQuantityKg) {
       updatedProduct.status = 'fully_booked';
       updatedProduct.isPreBookingClosed = true;
@@ -290,7 +278,6 @@ exports.deleteProduct = async (req, res) => {
       return res.status(404).json({ success: false, error: 'Product not found' });
     }
 
-    // Ensure seller owns product or user is Admin
     if (product.seller.toString() !== req.user._id.toString() && req.user.role !== 'Admin') {
       return res.status(403).json({
         success: false,
@@ -304,4 +291,3 @@ exports.deleteProduct = async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
-

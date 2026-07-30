@@ -98,7 +98,10 @@ export default function EmploymentPage() {
 
   const filteredJobs = jobs.filter((j) => {
     if (selectedFilter === 'All') return true;
-    return j.type === selectedFilter;
+    if (selectedFilter === 'Internship') return j.type === 'internship';
+    if (selectedFilter === 'Workshop & Technical') return j.category === 'Workshop' || j.category === 'Electrical' || j.category === 'Tailoring & Craft';
+    if (selectedFilter === 'Front Office') return j.category === 'Front Office' || j.category === 'Clerical';
+    return j.type === selectedFilter || j.category === selectedFilter;
   });
 
   return (
@@ -122,10 +125,10 @@ export default function EmploymentPage() {
       >
         <div>
           <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: 0, fontWeight: '700', color: '#60A5FA' }}>
-            <Briefcase size={30} /> Community Employment & MGNREGA Skill Exchange
+            <Briefcase size={30} /> Community Employment & Internship Exchange
           </h2>
           <p style={{ margin: '6px 0 0 0', opacity: 0.9, fontSize: '0.95rem' }}>
-            Panchayat MGNREGA 100-Day Work Allocations, Local Vacancies & Ward Skill Mapping
+            Panchayat Internships, Auto Workshop Traineeships, Front Office Jobs & MGNREGA Allocations
           </p>
         </div>
 
@@ -177,7 +180,7 @@ export default function EmploymentPage() {
 
       {/* Job Type Filter Tabs */}
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-        {['All', 'MGNREGA 100-Day Work', 'Panchayat Maintenance', 'Local Business Vacancy', 'Skill Training'].map((cat) => (
+        {['All', 'Internship', 'Workshop & Technical', 'Front Office', 'MGNREGA 100-Day Work'].map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedFilter(cat)}
