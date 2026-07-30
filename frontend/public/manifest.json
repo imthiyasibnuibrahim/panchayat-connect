@@ -1,0 +1,21 @@
+{
+  "short_name": "PanchayatConnect",
+  "name": "Panchayat Connect | Kerala Community Ecosystem",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#064E3B",
+  "theme_color": "#064E3B",
+  "display": "standalone",
+  "orientation": "portrait"
+}
