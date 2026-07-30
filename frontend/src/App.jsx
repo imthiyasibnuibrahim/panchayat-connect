@@ -18,15 +18,38 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  if (loading) return <div style={{ padding: '24px', textAlign: 'center' }}>Loading user session...</div>;
+  
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '16px', color: 'var(--primary)' }}>
+        <div className="animate-pulse" style={{ fontSize: '1.2rem', fontWeight: '700' }}>
+          🌿 Loading Panchayat Connect...
+        </div>
+      </div>
+    );
+  }
+  
   return user ? children : <Navigate to="/login" replace />;
 };
 
 function Layout({ children }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const location = useLocation();
   const { user, logout, isAdmin } = useContext(AuthContext);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
@@ -64,6 +87,8 @@ function Layout({ children }) {
     }
   };
 
+  const displayName = user?.name && typeof user.name === 'string' ? user.name.split(' ')[0] : 'Citizen';
+
   const navItems = [
     { name: 'Dashboard', path: '/', icon: <Home size={20} /> },
     ...(isAdmin ? [{ name: 'Admin Control Center', path: '/admin', icon: <ShieldCheck size={20} color="#DC2626" /> }] : []),
@@ -94,8 +119,8 @@ function Layout({ children }) {
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '500' }}>
-            {getRoleBadge(user.role)}
-            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{user.name?.split(' ')[0]}</span>
+            {getRoleBadge(user?.role)}
+            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{displayName}</span>
           </div>
           
           <button onClick={logout} className="btn btn-danger" style={{ padding: '6px 10px', borderRadius: '18px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }} title="Logout">
@@ -157,6 +182,7 @@ export default function App() {
             <Route path="/market" element={<PrivateRoute><MarketplacePage /></PrivateRoute>} />
             <Route path="/agriculture" element={<PrivateRoute><AgriculturePage /></PrivateRoute>} />
             <Route path="/disaster" element={<PrivateRoute><DisasterPage /></PrivateRoute>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
       </Router>

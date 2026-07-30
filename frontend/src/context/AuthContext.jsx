@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [token, setToken] = useState(() => localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
 
   // Axios Interceptor for adding Authorization header
@@ -23,24 +23,41 @@ export const AuthProvider = ({ children }) => {
     return () => axios.interceptors.request.eject(interceptor);
   }, [token]);
 
-  // Load User on initial mount if token exists
+  // Load User on initial mount if token exists with timeout safety guard
   useEffect(() => {
+    let isMounted = true;
+    const safetyTimer = setTimeout(() => {
+      if (isMounted) setLoading(false);
+    }, 5000);
+
     const loadUser = async () => {
       if (!token) {
-        setLoading(false);
+        if (isMounted) setLoading(false);
         return;
       }
       try {
-        const res = await axios.get('/api/v1/auth/me');
-        setUser(res.data.data);
+        const res = await axios.get('/api/v1/auth/me', { timeout: 6000 });
+        if (isMounted && res.data?.data) {
+          setUser(res.data.data);
+        }
       } catch (err) {
-        console.error('Failed to load user', err);
-        logout();
+        console.error('Failed to load user session:', err);
+        localStorage.removeItem('token');
+        if (isMounted) {
+          setToken(null);
+          setUser(null);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
+
     loadUser();
+
+    return () => {
+      isMounted = false;
+      clearTimeout(safetyTimer);
+    };
   }, [token]);
 
   const sendOtp = async (phoneNumber) => {
@@ -103,4 +120,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
