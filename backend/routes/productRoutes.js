@@ -4,6 +4,7 @@ const productController = require('../controllers/productController');
 const { protect, authorize } = require('../middleware/auth');
 
 // Public/Citizen query
+router.get('/', productController.getProducts);
 router.get('/nearby', productController.getProductsWithinDeliveryRadius);
 router.post('/:productId/pre-book', protect, productController.preBookHarvestCrop);
 
